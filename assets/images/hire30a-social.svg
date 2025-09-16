@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="socialTitle socialDesc">
+  <title id="socialTitle">Hire30A Social Share Graphic</title>
+  <desc id="socialDesc">Promotional graphic for Hire30A highlighting hospitality careers across Santa Rosa Beach, Destin, and Panama City Beach.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002b36" />
+      <stop offset="100%" stop-color="#0096a1" />
+    </linearGradient>
+    <linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7ed4d4" />
+      <stop offset="100%" stop-color="#0096a1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <path d="M0 470c180-120 360-140 560-86 220 52 350 48 640-14v260H0z" fill="#f9f4eb" opacity="0.85" />
+  <g font-family="Montserrat, Arial, sans-serif" font-weight="700" fill="#f9f4eb">
+    <text x="120" y="220" font-size="120">Hire30A</text>
+    <text x="120" y="320" font-size="54" font-weight="600">Gulf Coast Hospitality Careers</text>
+  </g>
+  <g font-family="Raleway, Arial, sans-serif" font-weight="600" font-size="34" fill="#002b36">
+    <text x="120" y="420">Locals hiring locals across Santa Rosa Beach, Destin, and Panama City Beach</text>
+  </g>
+  <g fill="#ff7a59">
+    <circle cx="880" cy="240" r="90" opacity="0.85" />
+    <circle cx="1040" cy="190" r="60" opacity="0.45" />
+  </g>
+  <path d="M720 420c60-60 120-80 200-80s140 20 200 80H720z" fill="url(#wave)" opacity="0.75" />
+</svg>
