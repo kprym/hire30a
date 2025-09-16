@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hire30A Live Jobs Feed | Santa Rosa Beach, Destin &amp; Panama City Beach</title>
+  <meta
+    name="description"
+    content="Browse live hospitality jobs sourced from LinkedIn, Indeed, SoWal forums, and regional partners. Filter roles across Santa Rosa Beach, Destin, Miramar Beach, and Panama City Beach."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+</head>
+<body class="section-alt">
+  <header class="top-nav" aria-label="Primary">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Hire30A home">
+        <img src="assets/images/hire30a-logo.svg" alt="Hire30A logo" width="140" height="36" loading="lazy" />
+      </a>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="talent.html">Talent Studio</a></li>
+          <li><a href="employers.html">Employer Spotlight</a></li>
+          <li><a href="#jobs">Jobs Feed</a></li>
+          <li><a class="button button-outline" href="admin.html">Admin Portal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="jobs">
+    <section class="hero hero-sub" aria-labelledby="jobs-heading">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Live Gulf Coast Hiring</p>
+          <h1 id="jobs-heading">Hospitality jobs refreshed automatically from trusted sources.</h1>
+          <p class="lead">
+            LinkedIn, Indeed, Google Jobs, ZipRecruiter, and SoWal forums feed into this view using the Hire30A aggregator. Filter by
+            neighborhood, schedule, and source. Data only reflects what we receive &mdash; no inflated counts.
+          </p>
+          <div class="cta-group">
+            <button class="button" type="button" id="job-refresh">Refresh live feed</button>
+            <a class="button button-outline" href="talent.html">Ready to share your profile?</a>
+          </div>
+          <p class="form-footnote" id="jobs-last-updated" aria-live="polite"></p>
+        </div>
+        <div class="hero-card">
+          <h2>Quick stats</h2>
+          <dl class="hero-stats" aria-label="Job feed snapshot">
+            <div>
+              <dt id="jobs-total">0</dt>
+              <dd>Roles currently displayed</dd>
+            </div>
+            <div>
+              <dt id="jobs-destin">0</dt>
+              <dd>Located in Destin &amp; Miramar Beach</dd>
+            </div>
+            <div>
+              <dt id="jobs-pcb">0</dt>
+              <dd>Located in Panama City Beach</dd>
+            </div>
+          </dl>
+          <p class="hero-footer">Counts adjust instantly as filters change. Admin exports remain available for deeper analysis.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="filters-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="filters-heading">Filter the feed</h2>
+          <p>Choose neighborhoods, categories, or sources. Searches run in-browser so no login is required.</p>
+        </div>
+        <form id="job-filter" class="card" autocomplete="off">
+          <div class="filter-panel">
+            <div class="field">
+              <label for="search">Search by title, company, or keyword</label>
+              <input id="search" name="search" placeholder="e.g., server, concierge, mixologist" />
+            </div>
+            <div class="field">
+              <label for="location">Neighborhood</label>
+              <select id="location" name="location">
+                <option value="">All districts</option>
+                <option value="Santa Rosa Beach">Santa Rosa Beach &amp; 30A</option>
+                <option value="Destin">Destin &amp; Miramar Beach</option>
+                <option value="Panama City Beach">Panama City Beach &amp; 30E</option>
+                <option value="Niceville">Niceville &amp; Freeport</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="category">Hospitality focus</label>
+              <select id="category" name="category">
+                <option value="">Any category</option>
+                <option value="Food &amp; Beverage">Food &amp; Beverage</option>
+                <option value="Hotel &amp; Resort">Hotel &amp; Resort</option>
+                <option value="Vacation Rentals">Vacation Rentals</option>
+                <option value="Events &amp; Weddings">Events &amp; Weddings</option>
+                <option value="Retail &amp; Wellness">Retail &amp; Wellness</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="source">Source</label>
+              <select id="source" name="source">
+                <option value="">All sources</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Indeed">Indeed</option>
+                <option value="ZipRecruiter">ZipRecruiter</option>
+                <option value="SoWal">SoWal Forum</option>
+                <option value="Google Jobs">Google Jobs</option>
+                <option value="Manual">Manual submission</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="posted">Posted timeframe</label>
+              <select id="posted" name="posted">
+                <option value="">Anytime</option>
+                <option value="1">Last 24 hours</option>
+                <option value="3">Last 3 days</option>
+                <option value="7">Last 7 days</option>
+                <option value="14">Last 14 days</option>
+                <option value="30">Last 30 days</option>
+              </select>
+            </div>
+          </div>
+          <div class="cta-group">
+            <button class="button" type="submit">Apply filters</button>
+            <button class="button button-outline" type="reset">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="results-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="results-heading">Live openings</h2>
+          <p id="results-summary">Jobs appear as soon as sources respond.</p>
+        </div>
+        <div id="job-results" class="job-list" role="list"></div>
+        <div class="empty-state" id="jobs-empty" hidden>
+          <p>
+            No jobs match those filters yet. Try adjusting the filters or refresh the live feed. If you're expecting a posting from a
+            partner ATS, confirm credentials inside the admin portal.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="accuracy-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="accuracy-heading">Accuracy &amp; transparency first</h2>
+          <p>We only display what the sources provide. Counts stay exact and refresh when the admin runs a sync.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Source credentials</h3>
+            <p>
+              Connect your own RapidAPI key for JSearch (LinkedIn, Indeed, ZipRecruiter, Google Jobs) and optional SoWal RSS feed URLs from the
+              admin portal. Keys stay in your browser storage and can be rotated anytime.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Deduplication</h3>
+            <p>
+              We compare URLs, titles, and company names to remove duplicates before storing results. Nothing is embellished &mdash; if we can't
+              confirm, it doesn't show.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Export-ready</h3>
+            <p>
+              Admins can export JSON or CSV snapshots for deeper analytics, offline review, or to preload upcoming ATS migrations.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span id="year"></span> Hire30A. Curating real hospitality roles across the Emerald Coast.</p>
+      <a href="index.html">Return home</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/jobs.js" defer></script>
+</body>
+</html>

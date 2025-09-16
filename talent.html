@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hire30A Talent Studio | Build Your Hospitality Profile</title>
+  <meta
+    name="description"
+    content="Create a shareable hospitality profile for Santa Rosa Beach, Destin, and Panama City Beach employers. Highlight skills, certifications, availability, and personality without a login."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+</head>
+<body>
+  <header class="top-nav" aria-label="Primary">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Hire30A home">
+        <img src="assets/images/hire30a-logo.svg" alt="Hire30A logo" width="140" height="36" loading="lazy" />
+      </a>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="jobs.html">Live Jobs</a></li>
+          <li><a href="employers.html">Employer Spotlight</a></li>
+          <li><a href="#studio">Talent Studio</a></li>
+          <li><a class="button button-outline" href="admin.html">Admin Portal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="studio">
+    <section class="hero hero-sub" aria-labelledby="talent-heading">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Stand out to coastal employers</p>
+          <h1 id="talent-heading">Craft a hospitality profile that's ready to share today.</h1>
+          <p class="lead">
+            Highlight your experience, certifications, vibe, and availability. Everything saves to your browser, can be exported, and feeds the
+            Hire30A community when you choose to publish. No account required.
+          </p>
+          <div class="cta-group">
+            <a class="button" href="#builder">Start building</a>
+            <a class="button button-outline" href="jobs.html">Find a role</a>
+          </div>
+          <p class="form-footnote">Need help? Email <a href="mailto:talent@hire30a.com">talent@hire30a.com</a> for concierge support.</p>
+        </div>
+        <div class="hero-card">
+          <h2>Tips for a standout profile</h2>
+          <ul class="highlight-list">
+            <li>Focus on guest-impact stories and quantifiable wins.</li>
+            <li>Add certifications (ServSafe, TIPS, CPR, sommelier) and languages.</li>
+            <li>Link to reels or intro videos to bring your personality to life.</li>
+          </ul>
+          <p class="hero-footer">You control what becomes public. Toggle “Publish to community” when you're ready.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="builder" class="section" aria-labelledby="builder-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="builder-heading">Build your profile</h2>
+          <p>Fields marked with * are required. Nothing is shared publicly unless you opt in.</p>
+        </div>
+        <form id="talent-form" class="card" data-profile-form data-profile-type="seeker">
+          <div class="form-grid">
+            <div class="field">
+              <label for="talent-name">Full name *</label>
+              <input id="talent-name" name="fullName" required />
+            </div>
+            <div class="field">
+              <label for="talent-headline">Headline / Desired role *</label>
+              <input id="talent-headline" name="headline" placeholder="e.g., Waterfront Bartender &amp; Mixology Lead" required />
+            </div>
+            <div class="field">
+              <label for="talent-location">Home base *</label>
+              <select id="talent-location" name="location" required>
+                <option value="">Select</option>
+                <option>Santa Rosa Beach</option>
+                <option>Seaside</option>
+                <option>Grayton Beach</option>
+                <option>WaterColor</option>
+                <option>Destin</option>
+                <option>Miramar Beach</option>
+                <option>Panama City Beach</option>
+                <option>Alys Beach</option>
+                <option>Rosemary Beach</option>
+                <option>Freeport / Niceville</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="talent-email">Contact email *</label>
+              <input id="talent-email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="talent-phone">Phone (optional)</label>
+              <input id="talent-phone" name="phone" type="tel" placeholder="850-555-1234" />
+            </div>
+            <div class="field">
+              <label for="talent-social">Website or portfolio</label>
+              <input id="talent-social" name="website" placeholder="https://" />
+            </div>
+            <div class="field">
+              <label for="talent-linkedin">LinkedIn</label>
+              <input id="talent-linkedin" name="linkedin" placeholder="https://linkedin.com/in/" />
+            </div>
+            <div class="field">
+              <label for="talent-instagram">Instagram / TikTok</label>
+              <input id="talent-instagram" name="instagram" placeholder="@hire30a" />
+            </div>
+            <div class="field">
+              <label for="talent-availability">Availability *</label>
+              <select id="talent-availability" name="availability" required>
+                <option value="">Select</option>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Seasonal</option>
+                <option>On-call / Event-based</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="talent-pay">Desired compensation</label>
+              <input id="talent-pay" name="compensation" placeholder="$20/hr plus tips" />
+            </div>
+            <div class="field">
+              <label for="talent-neighborhoods">Preferred neighborhoods</label>
+              <input id="talent-neighborhoods" name="neighborhoods" placeholder="Seaside, WaterColor" />
+            </div>
+            <div class="field">
+              <label for="talent-photo">Profile image URL</label>
+              <input id="talent-photo" name="photo" placeholder="https://" />
+            </div>
+            <div class="field">
+              <label for="talent-video">Intro video link</label>
+              <input id="talent-video" name="video" placeholder="https://youtu.be/" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="talent-experience">Experience highlights *</label>
+            <textarea id="talent-experience" name="experience" rows="4" placeholder="Share your best guest stories" required></textarea>
+          </div>
+          <div class="field">
+            <label for="talent-skills">Top skills / certifications (comma separated)</label>
+            <input id="talent-skills" name="skills" placeholder="Craft cocktails, ServSafe, French, Micros POS" />
+          </div>
+          <div class="field">
+            <label for="talent-bio">About you</label>
+            <textarea id="talent-bio" name="bio" rows="3" placeholder="What should coastal teams know about you?"></textarea>
+          </div>
+          <div class="field">
+            <label>
+              <input type="checkbox" id="talent-publish" name="publish" /> Publish to the Hire30A community feed
+            </label>
+            <p class="form-footnote">We never publish without your approval. Toggle this on when you want employers to discover you.</p>
+          </div>
+          <div class="cta-group">
+            <button class="button" type="submit">Save profile locally</button>
+            <button class="button button-outline" type="button" data-export-profile>Export JSON</button>
+            <button class="button button-outline" type="button" data-copy-profile>Copy shareable summary</button>
+          </div>
+          <p class="form-footnote" id="talent-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="talent-preview-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="talent-preview-heading">Preview</h2>
+          <p>Your saved profiles appear here. You can edit, export, or remove them anytime.</p>
+        </div>
+        <div id="talent-preview" class="resume-grid"></div>
+        <div class="empty-state" id="talent-empty">
+          <p>No profiles yet. Fill out the form above to create your first showcase.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span id="year"></span> Hire30A. Talent stories from across the Emerald Coast.</p>
+      <a href="index.html">Return home</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/profiles.js" defer></script>
+</body>
+</html>

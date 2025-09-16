@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" role="img" aria-labelledby="mapTitle mapDesc">
+  <title id="mapTitle">Stylized Emerald Coast Map</title>
+  <desc id="mapDesc">Abstract illustration of Florida's Emerald Coast highlighting Santa Rosa Beach, Destin, and Panama City Beach.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7ed4d4" />
+      <stop offset="100%" stop-color="#0096a1" />
+    </linearGradient>
+  </defs>
+  <rect width="480" height="260" rx="28" fill="url(#ocean)" opacity="0.85" />
+  <path d="M30 150c90-62 180-72 300-44 60 14 96 20 120 14v60c-42 16-114 34-210 30-108-4-156-20-210-60z" fill="#f9f4eb" opacity="0.9" />
+  <g fill="#ff7a59">
+    <circle cx="170" cy="120" r="10" />
+    <circle cx="300" cy="110" r="10" />
+    <circle cx="380" cy="140" r="10" />
+  </g>
+  <g font-family="Montserrat, Arial, sans-serif" font-weight="600" font-size="18" fill="#002b36">
+    <text x="150" y="108">Santa Rosa Beach</text>
+    <text x="286" y="96">Destin</text>
+    <text x="350" y="132">Panama City Beach</text>
+  </g>
+</svg>

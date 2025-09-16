@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hire30A Admin Portal | Configure &amp; Moderate</title>
+  <meta
+    name="description"
+    content="Securely manage Hire30A branding, content, job aggregation sources, and community submissions from one passcode-protected portal."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+</head>
+<body class="section-alt">
+  <div class="admin-gate" data-admin-gate>
+    <form id="gate-form" class="card gate-card" autocomplete="off">
+      <h1>Hire30A Admin Access</h1>
+      <p>Enter the passcode to review and manage the coming-soon experience.</p>
+      <div class="field">
+        <label for="gate-passcode">Admin passcode</label>
+        <input id="gate-passcode" type="password" required />
+      </div>
+      <button class="button" type="submit">Unlock portal</button>
+      <p class="form-footnote" id="gate-message" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <div data-admin-shell hidden>
+    <header class="top-nav">
+      <div class="container">
+        <a class="brand" href="index.html">
+          <img src="assets/images/hire30a-logo.svg" alt="Hire30A logo" width="140" height="36" loading="lazy" />
+        </a>
+        <nav>
+          <ul class="nav-list">
+            <li><a href="index.html#top">Public site</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#theme">Branding</a></li>
+            <li><a href="#aggregator">Aggregation</a></li>
+            <li><a href="#profiles">Profiles</a></li>
+            <li><a class="button button-outline" href="jobs.html">View jobs</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview" class="section" aria-labelledby="overview-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h1 id="overview-heading">Admin overview</h1>
+            <p>Monitor live metrics, trigger job syncs, and keep the community experience accurate before full launch.</p>
+          </div>
+          <div class="metrics-grid">
+            <article class="metric-card">
+              <h2>Live jobs</h2>
+              <p id="admin-jobs-count">0</p>
+              <p class="form-footnote">Distinct roles aggregated across configured sources.</p>
+            </article>
+            <article class="metric-card">
+              <h2>Published talent</h2>
+              <p id="admin-seekers-count">0</p>
+              <p class="form-footnote">Profiles opted into the community feed.</p>
+            </article>
+            <article class="metric-card">
+              <h2>Hiring teams</h2>
+              <p id="admin-employers-count">0</p>
+              <p class="form-footnote">Employer spotlights ready for launch.</p>
+            </article>
+          </div>
+          <div class="cta-group">
+            <button class="button" type="button" id="admin-refresh-jobs">Refresh jobs now</button>
+            <button class="button button-outline" type="button" id="admin-export-jobs">Export jobs JSON</button>
+            <button class="button button-outline" type="button" id="admin-clear-jobs">Clear stored jobs</button>
+          </div>
+          <p class="form-footnote" id="admin-jobs-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section id="theme" class="section section-alt" aria-labelledby="theme-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h2 id="theme-heading">Brand controls</h2>
+            <p>Update colors to match seasonal campaigns or partnerships. Changes sync instantly with the public site.</p>
+          </div>
+          <form id="theme-form" class="card">
+            <div class="form-grid">
+              <div class="field">
+                <label for="primary-color">Primary coastline hue</label>
+                <input type="color" id="primary-color" name="primaryColor" value="#0096a1" />
+              </div>
+              <div class="field">
+                <label for="secondary-color">Seafoam accent</label>
+                <input type="color" id="secondary-color" name="secondaryColor" value="#7ed4d4" />
+              </div>
+              <div class="field">
+                <label for="accent-color">Sunset highlight</label>
+                <input type="color" id="accent-color" name="accentColor" value="#ff7a59" />
+              </div>
+            </div>
+            <div class="cta-group">
+              <button class="button" type="submit">Save branding</button>
+              <button class="button button-outline" type="button" id="reset-theme">Reset defaults</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="content" class="section" aria-labelledby="content-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h2 id="content-heading">Hero messaging</h2>
+            <p>Craft the story that appears on the public homepage hero.</p>
+          </div>
+          <form id="content-form" class="card">
+            <div class="field">
+              <label for="hero-heading-input">Hero headline</label>
+              <input id="hero-heading-input" name="heroHeading" />
+            </div>
+            <div class="field">
+              <label for="hero-lead-input">Hero supporting copy</label>
+              <textarea id="hero-lead-input" name="heroLead" rows="4"></textarea>
+            </div>
+            <div class="cta-group">
+              <button class="button" type="submit">Update hero copy</button>
+              <button class="button button-outline" type="button" id="reset-content">Use defaults</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="aggregator" class="section section-alt" aria-labelledby="aggregator-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h2 id="aggregator-heading">Job aggregation settings</h2>
+            <p>Configure API keys and feeds used to populate the live jobs page. Keys stay in browser storage.</p>
+          </div>
+          <form id="aggregator-form" class="card" autocomplete="off">
+            <div class="form-grid">
+              <div class="field">
+                <label for="agg-query">Keyword focus</label>
+                <input id="agg-query" name="query" placeholder="hospitality" />
+              </div>
+              <div class="field">
+                <label for="agg-location">Primary location</label>
+                <input id="agg-location" name="location" placeholder="Santa Rosa Beach, FL" />
+              </div>
+              <div class="field">
+                <label for="agg-radius">Radius (miles)</label>
+                <input id="agg-radius" name="radiusMiles" type="number" min="1" max="100" />
+              </div>
+              <div class="field">
+                <label for="agg-max">Max results</label>
+                <input id="agg-max" name="maxResults" type="number" min="1" max="100" />
+              </div>
+              <div class="field">
+                <label for="agg-key">RapidAPI JSearch key</label>
+                <input id="agg-key" name="jsearchKey" placeholder="Paste your key" />
+              </div>
+              <div class="field">
+                <label for="agg-host">RapidAPI host</label>
+                <input id="agg-host" name="jsearchHost" placeholder="jsearch.p.rapidapi.com" />
+              </div>
+              <div class="field">
+                <label for="agg-sowal">SoWal RSS feed</label>
+                <input id="agg-sowal" name="sowalFeed" placeholder="https://" />
+              </div>
+              <div class="field">
+                <label for="agg-proxy">Optional proxy endpoint</label>
+                <input id="agg-proxy" name="proxyEndpoint" placeholder="https://yourdomain.com/api/jobs" />
+              </div>
+            </div>
+            <fieldset class="toggle-grid">
+              <legend>Include sources</legend>
+              <label><input type="checkbox" id="agg-source-jsearch" name="source-jsearch" /> JSearch (LinkedIn/Indeed/ZipRecruiter)</label>
+              <label><input type="checkbox" id="agg-source-sowal" name="source-sowal" /> SoWal forums</label>
+              <label><input type="checkbox" id="agg-source-manual" name="source-manual" /> Manual jobs in settings</label>
+            </fieldset>
+            <div class="cta-group">
+              <button class="button" type="submit">Save aggregation settings</button>
+              <button class="button button-outline" type="button" id="aggregator-test">Test connection</button>
+            </div>
+            <p class="form-footnote" id="aggregator-status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="jobs-table" class="section" aria-labelledby="jobs-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h2 id="jobs-heading">Latest jobs snapshot</h2>
+            <p>Review aggregated jobs. Export for analysis or clear to force a fresh sync.</p>
+          </div>
+          <div class="card">
+            <table class="data-table" aria-describedby="jobs-heading">
+              <thead>
+                <tr>
+                  <th scope="col">Role</th>
+                  <th scope="col">Company</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Source</th>
+                  <th scope="col">Updated</th>
+                </tr>
+              </thead>
+              <tbody id="admin-jobs-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="profiles" class="section section-alt" aria-labelledby="profiles-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h2 id="profiles-heading">Community profiles</h2>
+            <p>Moderate talent and employer spotlights captured through public forms.</p>
+          </div>
+          <div class="form-grid">
+            <div class="card">
+              <h3>Talent profiles</h3>
+              <table class="data-table" aria-label="Talent profiles">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Headline</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Publish</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-seekers-body"></tbody>
+              </table>
+              <div class="cta-group">
+                <button class="button button-outline" type="button" id="admin-export-seekers">Export talent JSON</button>
+                <button class="button button-outline" type="button" id="admin-clear-seekers">Clear talent</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Employer spotlights</h3>
+              <table class="data-table" aria-label="Employer profiles">
+                <thead>
+                  <tr>
+                    <th scope="col">Business</th>
+                    <th scope="col">Tagline</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Publish</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-employers-body"></tbody>
+              </table>
+              <div class="cta-group">
+                <button class="button button-outline" type="button" id="admin-export-employers">Export employers JSON</button>
+                <button class="button button-outline" type="button" id="admin-clear-employers">Clear employers</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="security" class="section" aria-labelledby="security-heading">
+        <div class="container">
+          <div class="section-header align-left">
+            <h2 id="security-heading">Security &amp; access</h2>
+            <p>Rotate the admin passcode regularly. Hashes store locally so nothing leaves the browser.</p>
+          </div>
+          <form id="passcode-form" class="card">
+            <div class="field">
+              <label for="new-passcode">New admin passcode</label>
+              <input id="new-passcode" name="passcode" type="password" required />
+            </div>
+            <div class="cta-group">
+              <button class="button" type="submit">Update passcode</button>
+            </div>
+            <p class="form-footnote" id="passcode-status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <p>&copy; <span id="admin-year"></span> Hire30A Admin Preview</p>
+        <a href="sitemap.xml">Sitemap</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

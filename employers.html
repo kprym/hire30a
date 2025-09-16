@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hire30A Employer Spotlight | Share Your Hospitality Story</title>
+  <meta
+    name="description"
+    content="Create a coastal employer spotlight for restaurants, resorts, vacation rentals, and experiences along 30A, Destin, and Panama City Beach. Showcase perks, culture, and hiring needs."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+</head>
+<body class="section-alt">
+  <header class="top-nav" aria-label="Primary">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Hire30A home">
+        <img src="assets/images/hire30a-logo.svg" alt="Hire30A logo" width="140" height="36" loading="lazy" />
+      </a>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="jobs.html">Live Jobs</a></li>
+          <li><a href="talent.html">Talent Studio</a></li>
+          <li><a href="#employer">Employer Spotlight</a></li>
+          <li><a class="button button-outline" href="admin.html">Admin Portal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="employer">
+    <section class="hero hero-sub" aria-labelledby="employer-heading">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Showcase your coastal brand</p>
+          <h1 id="employer-heading">Tell the story that attracts locals who love hospitality.</h1>
+          <p class="lead">
+            Share your vibe, values, perks, and hiring priorities. Your spotlight feeds Hire30A search, helps candidates pre-screen, and
+            becomes a reusable asset for social and email outreach.
+          </p>
+          <div class="cta-group">
+            <a class="button" href="#spotlight">Build your spotlight</a>
+            <a class="button button-outline" href="jobs.html">View current applicants</a>
+          </div>
+          <p class="form-footnote">Paid sponsorships launch later. Everything here is free for the community preview.</p>
+        </div>
+        <div class="hero-card">
+          <h2>What to include</h2>
+          <ul class="highlight-list">
+            <li>Signature experiences, seasonal highlights, and community involvement.</li>
+            <li>Team culture, leadership introductions, and training pathways.</li>
+            <li>Pay transparency, housing support, and scheduling flexibility.</li>
+          </ul>
+          <p class="hero-footer">Profiles stay editable. Update them in seconds before a hiring push.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="spotlight" class="section" aria-labelledby="spotlight-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="spotlight-heading">Build your employer spotlight</h2>
+          <p>Everything saves locally and can sync to the community feed once you're satisfied.</p>
+        </div>
+        <form id="employer-form" class="card" data-profile-form data-profile-type="employer">
+          <div class="form-grid">
+            <div class="field">
+              <label for="employer-name">Business name *</label>
+              <input id="employer-name" name="businessName" required />
+            </div>
+            <div class="field">
+              <label for="employer-tagline">Tagline *</label>
+              <input id="employer-tagline" name="tagline" placeholder="e.g., Sunset-forward dining on Scenic 30A" required />
+            </div>
+            <div class="field">
+              <label for="employer-location">Primary location *</label>
+              <select id="employer-location" name="location" required>
+                <option value="">Select</option>
+                <option>Santa Rosa Beach</option>
+                <option>Seaside</option>
+                <option>Grayton Beach</option>
+                <option>WaterColor</option>
+                <option>Seacrest / Alys Beach</option>
+                <option>Destin</option>
+                <option>Miramar Beach</option>
+                <option>Sandestin</option>
+                <option>Panama City Beach</option>
+                <option>Rosemary Beach</option>
+                <option>30A West</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="employer-neighborhoods">Additional service areas</label>
+              <input id="employer-neighborhoods" name="neighborhoods" placeholder="Destin Harbor, Grayton Beach" />
+            </div>
+            <div class="field">
+              <label for="employer-contact">Hiring contact name *</label>
+              <input id="employer-contact" name="contactName" placeholder="Jane Doe, Director of People" required />
+            </div>
+            <div class="field">
+              <label for="employer-email">Hiring email *</label>
+              <input id="employer-email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="employer-phone">Phone</label>
+              <input id="employer-phone" name="phone" type="tel" placeholder="850-555-7890" />
+            </div>
+            <div class="field">
+              <label for="employer-website">Website</label>
+              <input id="employer-website" name="website" placeholder="https://" />
+            </div>
+            <div class="field">
+              <label for="employer-linkedin">LinkedIn / Careers page</label>
+              <input id="employer-linkedin" name="linkedin" placeholder="https://" />
+            </div>
+            <div class="field">
+              <label for="employer-instagram">Instagram / TikTok</label>
+              <input id="employer-instagram" name="instagram" placeholder="@hire30a" />
+            </div>
+            <div class="field">
+              <label for="employer-photo">Feature image URL</label>
+              <input id="employer-photo" name="photo" placeholder="https://" />
+            </div>
+            <div class="field">
+              <label for="employer-video">Spotlight video link</label>
+              <input id="employer-video" name="video" placeholder="https://youtu.be/" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="employer-description">Who you are *</label>
+            <textarea id="employer-description" name="description" rows="4" placeholder="Tell your origin story" required></textarea>
+          </div>
+          <div class="field">
+            <label for="employer-culture">Culture &amp; values</label>
+            <textarea id="employer-culture" name="culture" rows="3" placeholder="What makes your team thrive?"></textarea>
+          </div>
+          <div class="field">
+            <label for="employer-perks">Perks &amp; benefits</label>
+            <textarea id="employer-perks" name="perks" rows="3" placeholder="Housing stipends, shift meals, signing bonuses"></textarea>
+          </div>
+          <div class="field">
+            <label for="employer-roles">Roles you're hiring for *</label>
+            <textarea id="employer-roles" name="roles" rows="3" placeholder="List roles, pay ranges, and shift expectations" required></textarea>
+          </div>
+          <div class="field">
+            <label for="employer-pay">Compensation &amp; housing support</label>
+            <input id="employer-pay" name="compensation" placeholder="$55k salary + seasonal bonus" />
+          </div>
+          <div class="field">
+            <label for="employer-notes">Additional notes</label>
+            <textarea id="employer-notes" name="notes" rows="3" placeholder="Include application steps or upcoming hiring events"></textarea>
+          </div>
+          <div class="field">
+            <label for="employer-categories">Hospitality categories</label>
+            <input id="employer-categories" name="categories" placeholder="Restaurant, Resort, Events, Wellness" />
+          </div>
+          <div class="field">
+            <label>
+              <input type="checkbox" id="employer-publish" name="publish" /> Publish to the Hire30A community feed
+            </label>
+            <p class="form-footnote">Toggle this when you want your spotlight visible on Hire30A and included in newsletters.</p>
+          </div>
+          <div class="cta-group">
+            <button class="button" type="submit">Save spotlight locally</button>
+            <button class="button button-outline" type="button" data-export-profile>Export JSON</button>
+            <button class="button button-outline" type="button" data-copy-profile>Copy shareable summary</button>
+          </div>
+          <p class="form-footnote" id="employer-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="employer-preview-heading">
+      <div class="container">
+        <div class="section-header align-left">
+          <h2 id="employer-preview-heading">Spotlight preview</h2>
+          <p>Saved spotlights appear below. Update or remove them any time.</p>
+        </div>
+        <div id="employer-preview" class="resume-grid"></div>
+        <div class="empty-state" id="employer-empty">
+          <p>No spotlights yet. Fill in the form to publish your first story.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span id="year"></span> Hire30A. Showcasing coastal hospitality brands.</p>
+      <a href="index.html">Return home</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/profiles.js" defer></script>
+</body>
+</html>
