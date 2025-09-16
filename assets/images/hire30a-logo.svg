@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" role="img" aria-labelledby="title desc">
+  <title id="title">Hire30A logo</title>
+  <desc id="desc">Wordmark for Hire30A featuring gradient sun and wave motif.</desc>
+  <defs>
+    <linearGradient id="sunrise" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd166" />
+      <stop offset="100%" stop-color="#ff7a59" />
+    </linearGradient>
+    <linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0096a1" />
+      <stop offset="100%" stop-color="#7ed4d4" />
+    </linearGradient>
+  </defs>
+  <g font-family="Montserrat, Arial, sans-serif" font-weight="700" font-size="44" fill="#002b36">
+    <text x="90" y="52">Hire</text>
+    <text x="194" y="52" fill="url(#wave)">30A</text>
+  </g>
+  <g transform="translate(20 16)">
+    <circle cx="24" cy="24" r="24" fill="url(#sunrise)" opacity="0.85" />
+    <path d="M0 36c8-8 16-12 24-12s16 4 24 12H0z" fill="url(#wave)" />
+  </g>
+</svg>
