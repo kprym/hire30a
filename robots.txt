@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://hire30a.com/sitemap.xml
