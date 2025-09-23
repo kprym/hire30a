@@ -1,142 +1,136 @@
 (function () {
-  const data = window.Hire30AData;
-  if (!data) return;
+  const data = window.Hire30A || null;
 
-  const STORAGE_KEYS = {
-    settings: "hire30a-settings",
-    jobs: "hire30a-aggregated",
-    seekers: "hire30a-profiles-seekers",
-    employers: "hire30a-profiles-employers",
-  };
+  function setupNavigation() {
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.navbar');
+    if (!toggle || !nav) return;
 
-  function setText(id, value) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.textContent = value;
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('is-open', !expanded);
+    });
+
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('is-open');
+      });
+    });
+  }
+
+  function applyBranding() {
+    if (!data) return;
+    data.applyBranding();
+  }
+
+  function populateHero() {
+    if (!data) return;
+    const hero = data.getHeroContent();
+    const heading = document.getElementById('hero-heading');
+    const subheading = document.getElementById('hero-subheading');
+    if (heading && hero.heading) {
+      heading.textContent = hero.heading;
+    }
+    if (subheading && hero.subheading) {
+      subheading.textContent = hero.subheading;
     }
   }
 
   function formatNumber(value) {
-    return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(value || 0);
+    return Number(value || 0).toLocaleString();
   }
 
-  function formatDate(iso) {
-    if (!iso) return "";
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return "";
-    return date.toLocaleString(undefined, {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
+  function populateStats() {
+    if (!data) return;
+    const stats = data.getStats();
+    const statMap = {
+      'stat-jobs': stats.jobs,
+      'stat-talent': stats.talent,
+      'stat-employers': stats.employers,
+      'stat-newsletter': stats.newsletter,
+    };
+    Object.entries(statMap).forEach(([id, value]) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = formatNumber(value);
+      }
     });
   }
 
-  function updateHeroCopy() {
-    const settings = data.getSettings();
-    data.applyBrandSettings(settings);
-    setText("hero-heading", settings.heroHeading || "Hire30A connects hospitality talent with coastal employers.");
-    setText(
-      "hero-lead",
-      settings.heroLead ||
-        "From the sugar-white shores of Santa Rosa Beach to Destin and Panama City Beach, we make it effortless to surface real jobs, spotlight resumes, and build the Emerald Coast's go-to hiring hub."
-    );
-  }
+  function renderSignals() {
+    if (!data) return;
+    const container = document.getElementById('update-feed');
+    if (!container) return;
 
-  function countPublished(profiles) {
-    return profiles.filter((profile) => profile && profile.publish).length;
-  }
-
-  function updateMetrics() {
-    const jobState = data.getJobState();
-    const jobs = jobState.jobs || [];
-    const seekers = data.getProfiles("seeker");
-    const employers = data.getProfiles("employer");
-    setText("metric-jobs", formatNumber(jobs.length));
-    setText("metric-seekers", formatNumber(countPublished(seekers)));
-    setText("metric-employers", formatNumber(countPublished(employers)));
-  }
-
-  function renderHeroUpdates() {
-    const list = document.getElementById("hero-updates");
-    if (!list) return;
-    list.innerHTML = "";
-    const jobState = data.getJobState();
-    const jobs = jobState.jobs || [];
-
-    if (!jobs.length) {
-      const item = document.createElement("li");
-      item.textContent = "Connect the admin aggregator with your API keys to stream live jobs from LinkedIn, Indeed, SoWal, and more.";
-      list.appendChild(item);
+    container.innerHTML = '';
+    const signals = data.getSignals();
+    if (!signals.length) {
+      const empty = document.createElement('li');
+      empty.className = 'update-item';
+      empty.textContent = 'Be the first to share a job, resume, or employer story from the Emerald Coast.';
+      container.appendChild(empty);
       return;
     }
 
-    jobs.slice(0, 5).forEach((job) => {
-      const item = document.createElement("li");
-      const title = document.createElement("strong");
-      title.textContent = job.title || "Untitled role";
-      item.appendChild(title);
-      const details = [job.company, job.area || job.location || "Emerald Coast"].filter(Boolean);
-      if (details.length) {
-        item.appendChild(document.createTextNode(` · ${details.join(" · ")}`));
+    signals.forEach((signal) => {
+      const item = document.createElement('li');
+      item.className = 'update-item';
+      const text = document.createElement('span');
+      text.textContent = signal.text;
+      item.appendChild(text);
+      if (signal.label) {
+        const label = document.createElement('small');
+        label.textContent = signal.label;
+        item.appendChild(label);
       }
-      list.appendChild(item);
+      container.appendChild(item);
     });
-
-    if (jobState.updatedAt) {
-      const updated = document.createElement("li");
-      updated.textContent = `Last refreshed ${formatDate(jobState.updatedAt)}.`;
-      list.appendChild(updated);
-    }
   }
 
-  function initNewsletter() {
-    const form = document.getElementById("newsletter-form");
-    const success = document.getElementById("newsletter-success");
+  function handleNewsletter() {
+    if (!data) return;
+    const form = document.getElementById('newsletter-form');
+    const success = document.getElementById('newsletter-success');
+    const emailInput = document.getElementById('newsletter-email');
     if (!form) return;
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
       const formData = new FormData(form);
-      const email = (formData.get("email") || "").toString().trim();
-      if (!email) return;
-      data.saveNewsletter(email);
+      const email = formData.get('email');
+      const entry = data.addNewsletter({ email, source: 'coming-soon' });
+      if (!entry) return;
       form.reset();
       if (success) {
-        success.hidden = false;
+        success.classList.add('is-visible');
       }
+      populateStats();
+      renderSignals();
     });
-  }
 
-  function initYear() {
-    setText("year", new Date().getFullYear());
-  }
-
-  function handleStorage(event) {
-    if (!event || !event.key) return;
-    switch (event.key) {
-      case STORAGE_KEYS.settings:
-        updateHeroCopy();
-        break;
-      case STORAGE_KEYS.jobs:
-        updateMetrics();
-        renderHeroUpdates();
-        break;
-      case STORAGE_KEYS.seekers:
-      case STORAGE_KEYS.employers:
-        updateMetrics();
-        break;
-      default:
-        break;
+    if (emailInput && success) {
+      emailInput.addEventListener('input', () => {
+        success.classList.remove('is-visible');
+      });
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    updateHeroCopy();
-    updateMetrics();
-    renderHeroUpdates();
-    initNewsletter();
-    initYear();
-    window.addEventListener("storage", handleStorage);
+  function setYear() {
+    const target = document.getElementById('year');
+    if (target) {
+      target.textContent = new Date().getFullYear();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupNavigation();
+    applyBranding();
+    populateHero();
+    populateStats();
+    renderSignals();
+    handleNewsletter();
+    setYear();
   });
 })();

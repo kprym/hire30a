@@ -1,294 +1,219 @@
 (function () {
-  const data = window.Hire30AData;
+  const data = window.Hire30A || null;
   if (!data) return;
 
-  const formatNumber = (value) => new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(value || 0);
+  const filterForm = document.getElementById('job-filter');
+  const resultsContainer = document.getElementById('job-results');
+  const emptyState = document.getElementById('jobs-empty');
+  const totalEl = document.getElementById('jobs-total');
+  const communityEl = document.getElementById('jobs-community');
+  const previewEl = document.getElementById('jobs-preview');
+  const shareForm = document.getElementById('job-share-form');
+  const shareSuccess = document.getElementById('job-success');
 
-  function formatRelativeDate(iso) {
-    if (!iso) return "";
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return "";
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffDays = diffMs / (1000 * 60 * 60 * 24);
-    if (diffDays < 1) {
-      const diffHours = Math.round(diffMs / (1000 * 60 * 60));
-      if (diffHours <= 1) return "Posted within the last hour";
-      return `Posted ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
-    }
-    if (diffDays < 7) {
-      const rounded = Math.round(diffDays);
-      return `Posted ${rounded} day${rounded === 1 ? "" : "s"} ago`;
-    }
-    return `Posted ${date.toLocaleDateString()}`;
+  function formatDate(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toLocaleDateString(undefined, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   }
 
-  function truncate(text, length = 280) {
-    if (!text) return "";
-    if (text.length <= length) return text;
-    return `${text.slice(0, length - 1).trim()}…`;
+  function formatNumber(value) {
+    return Number(value || 0).toLocaleString();
   }
 
-  function createBadge(text) {
-    const span = document.createElement("span");
-    span.className = "badge";
+  function renderJobs(jobs) {
+    if (!resultsContainer) return;
+    resultsContainer.innerHTML = '';
+    if (!jobs.length) {
+      if (emptyState) emptyState.hidden = false;
+      if (totalEl) totalEl.textContent = formatNumber(0);
+      return;
+    }
+
+    if (emptyState) emptyState.hidden = true;
+
+    jobs.forEach((job) => {
+      const card = document.createElement('article');
+      card.className = 'job-card';
+      card.setAttribute('role', 'listitem');
+
+      const header = document.createElement('header');
+      const title = document.createElement('h3');
+      title.textContent = job.title || 'Hospitality role';
+      header.appendChild(title);
+
+      const company = document.createElement('p');
+      company.className = 'form-footnote';
+      company.textContent = job.company || 'Local business';
+      header.appendChild(company);
+
+      const meta = document.createElement('div');
+      meta.className = 'job-meta';
+      if (job.area) meta.appendChild(createMetaChip(job.area));
+      if (job.category) meta.appendChild(createMetaChip(job.category));
+      if (job.type) meta.appendChild(createMetaChip(job.type));
+      if (!job.sample && job.createdAt) {
+        meta.appendChild(createMetaChip(`Added ${formatDate(job.createdAt)}`));
+      }
+      header.appendChild(meta);
+
+      if (job.sample) {
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = 'Sample preview';
+        header.appendChild(badge);
+      } else {
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = 'Community submission';
+        header.appendChild(badge);
+      }
+
+      card.appendChild(header);
+
+      if (job.description) {
+        const description = document.createElement('p');
+        description.textContent = job.description;
+        card.appendChild(description);
+      }
+
+      if (!job.sample) {
+        const contact = document.createElement('p');
+        contact.className = 'form-footnote';
+        if (job.email || job.link) {
+          contact.textContent = 'Connect: ';
+          const fragments = [];
+          if (job.email) {
+            const mail = document.createElement('a');
+            mail.href = `mailto:${job.email}`;
+            mail.textContent = job.email;
+            fragments.push(mail);
+          }
+          if (job.link) {
+            const anchor = document.createElement('a');
+            anchor.href = job.link;
+            anchor.target = '_blank';
+            anchor.rel = 'noopener noreferrer';
+            anchor.textContent = 'Apply link';
+            fragments.push(anchor);
+          }
+          fragments.forEach((element, index) => {
+            if (index > 0) contact.append(' · ');
+            contact.appendChild(element);
+          });
+        } else {
+          contact.textContent = 'Connect: Details shared privately with the Hire30A team.';
+        }
+        card.appendChild(contact);
+      }
+
+      resultsContainer.appendChild(card);
+    });
+
+    if (totalEl) {
+      totalEl.textContent = formatNumber(jobs.length);
+    }
+  }
+
+  function createMetaChip(text) {
+    const span = document.createElement('span');
     span.textContent = text;
     return span;
   }
 
-  function createJobCard(job) {
-    const article = document.createElement("article");
-    article.className = "job-card";
-    article.setAttribute("role", "listitem");
-    const header = document.createElement("header");
-    const title = document.createElement("h3");
-    title.textContent = job.title || "Untitled role";
-    header.appendChild(title);
-
-    const meta = document.createElement("div");
-    meta.className = "job-meta";
-    if (job.company) {
-      const company = document.createElement("span");
-      company.textContent = job.company;
-      meta.appendChild(company);
+  function matchFilter(job, filters) {
+    const search = filters.search;
+    if (search) {
+      const haystack = `${job.title || ''} ${job.company || ''} ${job.description || ''}`.toLowerCase();
+      if (!haystack.includes(search.toLowerCase())) {
+        return false;
+      }
     }
-    if (job.location) {
-      const location = document.createElement("span");
-      location.textContent = job.location;
-      meta.appendChild(location);
-    }
-    if (job.schedule) {
-      const schedule = document.createElement("span");
-      schedule.textContent = job.schedule;
-      meta.appendChild(schedule);
-    }
-    header.appendChild(meta);
-
-    if (job.category) {
-      header.appendChild(createBadge(job.category));
-    }
-    if (job.source) {
-      header.appendChild(createBadge(job.source));
-    }
-
-    article.appendChild(header);
-
-    if (job.description) {
-      const description = document.createElement("p");
-      description.className = "job-summary";
-      description.textContent = truncate(job.description, 420);
-      article.appendChild(description);
-    }
-
-    const footer = document.createElement("div");
-    footer.className = "job-actions";
-    const apply = document.createElement("a");
-    apply.className = "button";
-    apply.textContent = "View & Apply";
-    apply.href = job.url || "#";
-    apply.target = "_blank";
-    apply.rel = "noopener";
-    if (!job.url) {
-      apply.classList.add("button-outline");
-      apply.dataset.disabled = "true";
-      apply.textContent = "Details coming soon";
-      apply.href = "#";
-      apply.removeAttribute("target");
-      apply.removeAttribute("rel");
-    }
-    footer.appendChild(apply);
-
-    if (job.postedAt) {
-      const posted = document.createElement("span");
-      posted.className = "form-footnote";
-      posted.textContent = formatRelativeDate(job.postedAt);
-      footer.appendChild(posted);
-    }
-
-    article.appendChild(footer);
-    return article;
-  }
-
-  function updateEmptyState(isEmpty) {
-    const empty = document.getElementById("jobs-empty");
-    if (!empty) return;
-    empty.hidden = !isEmpty;
-  }
-
-  function updateStats(jobs) {
-    setText("jobs-total", formatNumber(jobs.length));
-    const destinCount = jobs.filter((job) => (job.area || "").includes("Destin")).length;
-    const pcbCount = jobs.filter((job) => (job.area || "").includes("Panama City Beach")).length;
-    setText("jobs-destin", formatNumber(destinCount));
-    setText("jobs-pcb", formatNumber(pcbCount));
-  }
-
-  function setText(id, value) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = value;
-    }
-  }
-
-  function renderJobs(list) {
-    const container = document.getElementById("job-results");
-    if (!container) return;
-    container.innerHTML = "";
-    if (!list.length) {
-      updateEmptyState(true);
-      const total = currentJobs.length;
-      const summary = total
-        ? `0 of ${formatNumber(total)} roles match those filters.`
-        : "No jobs match those filters yet.";
-      setText("results-summary", summary);
-      updateStats(list);
-      return;
-    }
-    updateEmptyState(false);
-    list.forEach((job) => {
-      container.appendChild(createJobCard(job));
-    });
-    const total = currentJobs.length;
-    const summary = total
-      ? `${formatNumber(list.length)} of ${formatNumber(total)} roles match your filters.`
-      : `${formatNumber(list.length)} roles displayed.`;
-    setText("results-summary", summary);
-    updateStats(list);
+    if (filters.area && job.area !== filters.area) return false;
+    if (filters.category && job.category !== filters.category) return false;
+    if (filters.type && job.type !== filters.type) return false;
+    return true;
   }
 
   function applyFilters() {
-    const query = filters.search.toLowerCase();
-    const location = filters.location.toLowerCase();
-    const category = filters.category.toLowerCase();
-    const source = filters.source.toLowerCase();
-    const postedDays = filters.posted ? parseInt(filters.posted, 10) : null;
+    const formData = filterForm ? new FormData(filterForm) : null;
+    const filters = {
+      search: formData ? (formData.get('search') || '').toString().trim() : '',
+      area: formData ? (formData.get('area') || '').toString() : '',
+      category: formData ? (formData.get('category') || '').toString() : '',
+      type: formData ? (formData.get('type') || '').toString() : '',
+    };
 
-    const filtered = currentJobs.filter((job) => {
-      if (query) {
-        const haystack = `${job.title || ""} ${job.company || ""} ${job.description || ""}`.toLowerCase();
-        if (!haystack.includes(query)) return false;
+    const allJobs = data.getJobs(true);
+    const filtered = allJobs.filter((job) => matchFilter(job, filters));
+    renderJobs(filtered);
+
+    const communityCount = data.getJobs(false).length;
+    if (communityEl) communityEl.textContent = formatNumber(communityCount);
+
+    const previewCount = allJobs.filter((job) => job.sample).length;
+    if (previewEl) previewEl.textContent = formatNumber(previewCount);
+
+    if (!filtered.length && emptyState) {
+      emptyState.hidden = false;
+    }
+  }
+
+  function handleFilterForm() {
+    if (!filterForm) return;
+    filterForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      applyFilters();
+    });
+    filterForm.addEventListener('reset', () => {
+      window.setTimeout(applyFilters, 0);
+    });
+  }
+
+  function handleShareForm() {
+    if (!shareForm) return;
+    shareForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(shareForm);
+      const payload = {
+        company: formData.get('company')?.toString().trim(),
+        title: formData.get('title')?.toString().trim(),
+        area: formData.get('area')?.toString().trim(),
+        category: formData.get('category')?.toString().trim(),
+        type: formData.get('type')?.toString().trim(),
+        email: formData.get('email')?.toString().trim(),
+        description: formData.get('description')?.toString().trim(),
+        link: formData.get('link')?.toString().trim(),
+      };
+
+      if (!payload.company || !payload.title || !payload.area || !payload.category || !payload.type || !payload.email || !payload.description) {
+        return;
       }
-      if (location) {
-        const area = (job.area || job.location || "").toLowerCase();
-        if (!area.includes(location)) return false;
+
+      data.addJob(payload);
+      shareForm.reset();
+      if (shareSuccess) {
+        shareSuccess.classList.add('is-visible');
       }
-      if (category && (job.category || "").toLowerCase() !== category) {
-        return false;
-      }
-      if (source && !(job.source || "").toLowerCase().includes(source)) {
-        return false;
-      }
-      if (postedDays !== null && job.postedAt) {
-        const diffMs = Date.now() - new Date(job.postedAt).getTime();
-        const diffDays = diffMs / (1000 * 60 * 60 * 24);
-        if (diffDays > postedDays) return false;
-      }
-      return true;
+      applyFilters();
     });
 
-    renderJobs(filtered);
-  }
-
-  function updateLastUpdated(iso) {
-    const element = document.getElementById("jobs-last-updated");
-    if (!element) return;
-    if (!iso) {
-      element.textContent = "Run a sync from the admin portal to populate the live feed.";
-      return;
-    }
-    element.textContent = `Last refreshed ${formatRelativeDate(iso)}`;
-  }
-
-  async function refreshJobs(button) {
-    const status = document.getElementById("jobs-last-updated");
-    if (button) button.disabled = true;
-    if (status) {
-      status.textContent = "Refreshing live feeds…";
-    }
-
-    const config = data.getAggregatorConfig();
-    const hasJSearch = config.includeSources?.jsearch && config.jsearchKey;
-    const hasSowal = config.includeSources?.sowal && config.sowalFeed;
-    const hasProxy = Boolean(config.proxyEndpoint);
-    if (!hasJSearch && !hasSowal && !hasProxy) {
-      if (status) {
-        status.textContent = "Add a JSearch API key, SoWal feed, or proxy endpoint in the admin portal to refresh jobs.";
-      }
-      if (button) button.disabled = false;
-      return;
-    }
-
-    try {
-      const state = await data.fetchAggregatedJobs(config);
-      currentJobs = state.jobs || [];
-      updateLastUpdated(state.updatedAt);
-      applyFilters();
-    } catch (error) {
-      console.warn("Unable to refresh jobs", error);
-      if (status) {
-        status.textContent = "Refresh failed. Check your network or API credentials.";
-      }
-    } finally {
-      if (button) button.disabled = false;
-    }
-  }
-
-  function syncFromStorage(event) {
-    if (!event || !event.key) return;
-    if (event.key === "hire30a-aggregated") {
-      const state = data.getJobState();
-      currentJobs = state.jobs || [];
-      updateLastUpdated(state.updatedAt);
-      applyFilters();
-    }
-  }
-
-  const filters = {
-    search: "",
-    location: "",
-    category: "",
-    source: "",
-    posted: "",
-  };
-
-  let currentJobs = [];
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const state = data.getJobState();
-    currentJobs = state.jobs || [];
-    updateLastUpdated(state.updatedAt);
-    updateStats(currentJobs);
-    renderJobs(currentJobs);
-    setText("year", new Date().getFullYear());
-
-    const form = document.getElementById("job-filter");
-    if (form) {
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const formData = new FormData(form);
-        filters.search = (formData.get("search") || "").toString().trim();
-        filters.location = (formData.get("location") || "").toString().trim();
-        filters.category = (formData.get("category") || "").toString().trim();
-        filters.source = (formData.get("source") || "").toString().trim();
-        filters.posted = (formData.get("posted") || "").toString().trim();
-        applyFilters();
-      });
-
-      form.addEventListener("reset", () => {
-        filters.search = "";
-        filters.location = "";
-        filters.category = "";
-        filters.source = "";
-        filters.posted = "";
-        window.setTimeout(() => applyFilters(), 0);
+    if (shareForm && shareSuccess) {
+      shareForm.querySelectorAll('input, textarea, select').forEach((element) => {
+        element.addEventListener('input', () => shareSuccess.classList.remove('is-visible'));
+        element.addEventListener('change', () => shareSuccess.classList.remove('is-visible'));
       });
     }
+  }
 
-    const refreshButton = document.getElementById("job-refresh");
-    if (refreshButton) {
-      refreshButton.addEventListener("click", () => refreshJobs(refreshButton));
-    }
-
-    window.addEventListener("storage", syncFromStorage);
+  document.addEventListener('DOMContentLoaded', () => {
+    applyFilters();
+    handleFilterForm();
+    handleShareForm();
   });
 })();

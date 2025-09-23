@@ -1,357 +1,312 @@
 (function () {
-  const data = window.Hire30AData;
+  const data = window.Hire30A || null;
   if (!data) return;
 
-  function formatDate(iso) {
-    if (!iso) return "";
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return "";
+  function formatNumber(value) {
+    return Number(value || 0).toLocaleString();
+  }
+
+  function formatDate(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
     return date.toLocaleDateString(undefined, {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   }
 
-  function createList(items) {
-    if (!items || !items.length) return null;
-    const list = document.createElement("ul");
-    items.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      list.appendChild(li);
-    });
-    return list;
+  function parseList(value) {
+    if (!value) return [];
+    return value
+      .toString()
+      .split(/[,\n]/)
+      .map((item) => item.trim())
+      .filter(Boolean);
   }
 
-  function buildSeekerSummary(profile) {
-    const lines = [];
-    lines.push(`${profile.fullName} — ${profile.headline}`);
-    lines.push(`Based in ${profile.location}. Availability: ${profile.availability || ""}`.trim());
-    if (profile.skills?.length) {
-      lines.push(`Top skills: ${profile.skills.join(", ")}`);
-    }
-    if (profile.experience) {
-      lines.push(`Experience: ${profile.experience}`);
-    }
-    if (profile.bio) {
-      lines.push(`About: ${profile.bio}`);
-    }
-    lines.push(`Contact: ${profile.email}${profile.phone ? ` | ${profile.phone}` : ""}`);
-    if (profile.website) lines.push(`Website: ${profile.website}`);
-    if (profile.linkedin) lines.push(`LinkedIn: ${profile.linkedin}`);
-    if (profile.instagram) lines.push(`Social: ${profile.instagram}`);
-    return lines.filter(Boolean).join("\n");
-  }
+  function renderTalent() {
+    const container = document.querySelector('[data-profile-list="talent"]');
+    if (!container) return;
+    const empty = document.querySelector('[data-profile-empty="talent"]');
+    const profiles = data.getTalent(true);
 
-  function buildEmployerSummary(profile) {
-    const lines = [];
-    lines.push(`${profile.businessName} — ${profile.tagline}`);
-    lines.push(`Located in ${profile.location}${profile.neighborhoods ? ` | Also hiring in ${profile.neighborhoods}` : ""}`);
-    if (profile.roles) lines.push(`Hiring for: ${profile.roles}`);
-    if (profile.perks) lines.push(`Perks: ${profile.perks}`);
-    if (profile.culture) lines.push(`Culture: ${profile.culture}`);
-    if (profile.description) lines.push(`About: ${profile.description}`);
-    if (profile.compensation) lines.push(`Compensation: ${profile.compensation}`);
-    if (profile.notes) lines.push(`Notes: ${profile.notes}`);
-    lines.push(`Contact: ${profile.contactName || "Hiring"} • ${profile.email}${profile.phone ? ` | ${profile.phone}` : ""}`);
-    if (profile.website) lines.push(`Website: ${profile.website}`);
-    if (profile.linkedin) lines.push(`Careers: ${profile.linkedin}`);
-    if (profile.instagram) lines.push(`Social: ${profile.instagram}`);
-    return lines.filter(Boolean).join("\n");
-  }
-
-  function downloadJSON(profile, type) {
-    const blob = new Blob([JSON.stringify(profile, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    const fileName = `${type}-${profile.id || Date.now()}.json`;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
-  function copyToClipboard(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
-    }
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    textarea.style.position = "fixed";
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-    return Promise.resolve();
-  }
-
-  function renderProfiles(type, profiles, selectedId) {
-    const preview = document.getElementById(`${type}-preview`);
-    const empty = document.getElementById(`${type}-empty`);
-    if (!preview) return;
-
-    preview.innerHTML = "";
-
+    container.innerHTML = '';
     if (!profiles.length) {
       if (empty) empty.hidden = false;
       return;
     }
-
     if (empty) empty.hidden = true;
 
     profiles.forEach((profile) => {
-      const card = document.createElement("article");
-      card.className = "resume-card";
-      card.dataset.profileId = profile.id;
-      if (profile.id === selectedId) {
-        card.classList.add("is-active");
+      const card = document.createElement('article');
+      card.className = 'profile-card';
+
+      const header = document.createElement('header');
+      const title = document.createElement('h3');
+      title.textContent = profile.name || profile.fullName || 'Hospitality talent';
+      header.appendChild(title);
+
+      if (profile.headline) {
+        const subtitle = document.createElement('p');
+        subtitle.className = 'form-footnote';
+        subtitle.textContent = profile.headline;
+        header.appendChild(subtitle);
       }
 
-      const title = document.createElement("h3");
-      title.textContent = type === "seeker" ? profile.fullName : profile.businessName;
-      card.appendChild(title);
+      const meta = document.createElement('div');
+      meta.className = 'profile-meta';
+      if (profile.location) meta.appendChild(createMetaChip(profile.location));
+      if (profile.availability) meta.appendChild(createMetaChip(profile.availability));
+      if (!profile.sample && profile.createdAt) meta.appendChild(createMetaChip(`Added ${formatDate(profile.createdAt)}`));
+      header.appendChild(meta);
 
-      const subtitle = document.createElement("p");
-      subtitle.className = "form-footnote";
-      subtitle.textContent = type === "seeker" ? profile.headline : profile.tagline;
-      card.appendChild(subtitle);
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = profile.sample ? 'Sample preview' : 'Community submission';
+      header.appendChild(badge);
 
-      const location = document.createElement("p");
-      location.className = "form-footnote";
-      const locationParts = [];
-      if (profile.location) locationParts.push(profile.location);
-      if (type === "seeker" && profile.availability) locationParts.push(profile.availability);
-      if (type === "employer" && profile.neighborhoods) locationParts.push(`Also hiring in ${profile.neighborhoods}`);
-      location.textContent = locationParts.join(" • ");
-      card.appendChild(location);
+      card.appendChild(header);
 
-      if (type === "seeker" && profile.skills?.length) {
-        const list = createList(profile.skills.slice(0, 6));
-        if (list) {
-          card.appendChild(list);
+      if (profile.experience) {
+        const body = document.createElement('p');
+        body.textContent = profile.experience;
+        card.appendChild(body);
+      }
+
+      const highlights = profile.highlights || [];
+      if (highlights.length) {
+        const list = document.createElement('ul');
+        highlights.forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          list.appendChild(li);
+        });
+        card.appendChild(list);
+      }
+
+      if (!profile.sample && (profile.email || profile.phone)) {
+        const contact = document.createElement('p');
+        contact.className = 'form-footnote';
+        const fragments = [];
+        if (profile.email) {
+          const emailLink = document.createElement('a');
+          emailLink.href = `mailto:${profile.email}`;
+          emailLink.textContent = profile.email;
+          fragments.push(emailLink);
         }
-      }
-
-      if (type === "employer" && profile.categories) {
-        const categories = data.parseSkills(profile.categories).slice(0, 6);
-        const list = createList(categories);
-        if (list) {
-          card.appendChild(list);
+        if (profile.phone) {
+          const phoneLink = document.createElement('a');
+          phoneLink.href = `tel:${profile.phone}`;
+          phoneLink.textContent = profile.phone;
+          fragments.push(phoneLink);
         }
+        if (fragments.length) {
+          contact.textContent = 'Connect: ';
+          fragments.forEach((element, index) => {
+            if (index > 0) contact.append(' · ');
+            contact.appendChild(element);
+          });
+        }
+        card.appendChild(contact);
       }
 
-      if (profile.publish) {
-        const badge = document.createElement("span");
-        badge.className = "badge";
-        badge.textContent = "Opted into community";
-        card.appendChild(badge);
-      }
-
-      const footer = document.createElement("div");
-      footer.className = "job-actions";
-      const selectBtn = document.createElement("button");
-      selectBtn.type = "button";
-      selectBtn.className = "button button-outline";
-      selectBtn.textContent = "Set active";
-      selectBtn.dataset.action = "select";
-      selectBtn.dataset.id = profile.id;
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.type = "button";
-      deleteBtn.className = "button button-outline";
-      deleteBtn.textContent = "Remove";
-      deleteBtn.dataset.action = "delete";
-      deleteBtn.dataset.id = profile.id;
-
-      footer.appendChild(selectBtn);
-      footer.appendChild(deleteBtn);
-      card.appendChild(footer);
-
-      if (profile.createdAt) {
-        const created = document.createElement("p");
-        created.className = "form-footnote";
-        created.textContent = `Updated ${formatDate(profile.createdAt)}`;
-        card.appendChild(created);
-      }
-
-      preview.appendChild(card);
+      container.appendChild(card);
     });
   }
 
-  function initProfileBuilder(form) {
-    const type = form.dataset.profileType === "employer" ? "employer" : "seeker";
-    const status = document.getElementById(`${type}-status`) || document.getElementById("talent-status");
-    const exportBtn = document.querySelector("[data-export-profile]");
-    const copyBtn = document.querySelector("[data-copy-profile]");
-    let selectedProfileId = null;
+  function renderEmployers() {
+    const container = document.querySelector('[data-profile-list="employer"]');
+    if (!container) return;
+    const empty = document.querySelector('[data-profile-empty="employer"]');
+    const profiles = data.getEmployers(true);
 
-    function getProfiles() {
-      return data.getProfiles(type);
+    container.innerHTML = '';
+    if (!profiles.length) {
+      if (empty) empty.hidden = false;
+      return;
     }
+    if (empty) empty.hidden = true;
 
-    function getActiveProfile() {
-      const profiles = getProfiles();
-      return profiles.find((profile) => profile.id === selectedProfileId) || profiles[0] || null;
-    }
+    profiles.forEach((profile) => {
+      const card = document.createElement('article');
+      card.className = 'profile-card';
 
-    function setStatus(message, isError) {
-      if (!status) return;
-      status.textContent = message;
-      status.classList.toggle("error", Boolean(isError));
-    }
+      const header = document.createElement('header');
+      const title = document.createElement('h3');
+      title.textContent = profile.name || profile.businessName || 'Coastal employer';
+      header.appendChild(title);
 
-    function syncPreview() {
-      const profiles = getProfiles();
-      if (!profiles.length) {
-        selectedProfileId = null;
-      } else if (!selectedProfileId) {
-        selectedProfileId = profiles[0].id;
-      }
-      renderProfiles(type, profiles, selectedProfileId);
-    }
-
-    syncPreview();
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const formData = new FormData(form);
-      const base = {
-        publish: Boolean(formData.get("publish")),
-        createdAt: new Date().toISOString(),
-      };
-
-      let profile;
-
-      if (type === "seeker") {
-        profile = {
-          ...base,
-          fullName: (formData.get("fullName") || "").toString().trim(),
-          headline: (formData.get("headline") || "").toString().trim(),
-          location: (formData.get("location") || "").toString().trim(),
-          email: (formData.get("email") || "").toString().trim(),
-          phone: (formData.get("phone") || "").toString().trim(),
-          website: (formData.get("website") || "").toString().trim(),
-          linkedin: (formData.get("linkedin") || "").toString().trim(),
-          instagram: (formData.get("instagram") || "").toString().trim(),
-          availability: (formData.get("availability") || "").toString().trim(),
-          compensation: (formData.get("compensation") || "").toString().trim(),
-          neighborhoods: (formData.get("neighborhoods") || "").toString().trim(),
-          photo: (formData.get("photo") || "").toString().trim(),
-          video: (formData.get("video") || "").toString().trim(),
-          experience: (formData.get("experience") || "").toString().trim(),
-          skills: data.parseSkills((formData.get("skills") || "").toString()),
-          bio: (formData.get("bio") || "").toString().trim(),
-        };
-      } else {
-        profile = {
-          ...base,
-          businessName: (formData.get("businessName") || "").toString().trim(),
-          tagline: (formData.get("tagline") || "").toString().trim(),
-          location: (formData.get("location") || "").toString().trim(),
-          neighborhoods: (formData.get("neighborhoods") || "").toString().trim(),
-          contactName: (formData.get("contactName") || "").toString().trim(),
-          email: (formData.get("email") || "").toString().trim(),
-          phone: (formData.get("phone") || "").toString().trim(),
-          website: (formData.get("website") || "").toString().trim(),
-          linkedin: (formData.get("linkedin") || "").toString().trim(),
-          instagram: (formData.get("instagram") || "").toString().trim(),
-          photo: (formData.get("photo") || "").toString().trim(),
-          video: (formData.get("video") || "").toString().trim(),
-          description: (formData.get("description") || "").toString().trim(),
-          culture: (formData.get("culture") || "").toString().trim(),
-          perks: (formData.get("perks") || "").toString().trim(),
-          roles: (formData.get("roles") || "").toString().trim(),
-          compensation: (formData.get("compensation") || "").toString().trim(),
-          notes: (formData.get("notes") || "").toString().trim(),
-          categories: (formData.get("categories") || "").toString().trim(),
-        };
+      if (profile.tagline) {
+        const subtitle = document.createElement('p');
+        subtitle.className = 'form-footnote';
+        subtitle.textContent = profile.tagline;
+        header.appendChild(subtitle);
       }
 
-      const requiredFields = type === "seeker"
-        ? [profile.fullName, profile.headline, profile.location, profile.email, profile.availability, profile.experience]
-        : [profile.businessName, profile.tagline, profile.location, profile.contactName, profile.email, profile.roles];
+      const meta = document.createElement('div');
+      meta.className = 'profile-meta';
+      if (profile.location) meta.appendChild(createMetaChip(profile.location));
+      if (!profile.sample && profile.createdAt) meta.appendChild(createMetaChip(`Added ${formatDate(profile.createdAt)}`));
+      header.appendChild(meta);
 
-      if (requiredFields.some((value) => !value)) {
-        setStatus("Please complete all required fields.", true);
-        return;
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = profile.sample ? 'Sample preview' : 'Community submission';
+      header.appendChild(badge);
+
+      card.appendChild(header);
+
+      if (profile.focus) {
+        const focus = document.createElement('p');
+        focus.textContent = profile.focus;
+        card.appendChild(focus);
       }
 
-      const saved = data.addProfile(type, profile);
-      selectedProfileId = saved.id;
-      setStatus("Profile saved locally.");
-      syncPreview();
-      form.reset();
-    });
+      const perks = profile.perks || [];
+      if (perks.length) {
+        const list = document.createElement('ul');
+        perks.forEach((perk) => {
+          const li = document.createElement('li');
+          li.textContent = perk;
+          list.appendChild(li);
+        });
+        card.appendChild(list);
+      }
 
-    const preview = document.getElementById(`${type}-preview`);
-    if (preview) {
-      preview.addEventListener("click", (event) => {
-        const target = event.target;
-        if (!(target instanceof HTMLElement)) return;
-        const action = target.dataset.action;
-        const id = target.dataset.id;
-        if (!action || !id) return;
-
-        if (action === "select") {
-          selectedProfileId = id;
-          syncPreview();
-          setStatus("Profile selected for export.");
+      if (!profile.sample && (profile.email || profile.phone || profile.website || profile.social)) {
+        const contact = document.createElement('p');
+        contact.className = 'form-footnote';
+        contact.textContent = 'Connect: ';
+        const fragments = [];
+        if (profile.email) {
+          const emailLink = document.createElement('a');
+          emailLink.href = `mailto:${profile.email}`;
+          emailLink.textContent = profile.email;
+          fragments.push(emailLink);
         }
+        if (profile.phone) {
+          const phoneLink = document.createElement('a');
+          phoneLink.href = `tel:${profile.phone}`;
+          phoneLink.textContent = profile.phone;
+          fragments.push(phoneLink);
+        }
+        if (profile.website) {
+          const websiteLink = document.createElement('a');
+          websiteLink.href = profile.website;
+          websiteLink.target = '_blank';
+          websiteLink.rel = 'noopener noreferrer';
+          websiteLink.textContent = 'Website';
+          fragments.push(websiteLink);
+        }
+        if (profile.social) {
+          const socialLink = document.createElement('a');
+          socialLink.href = profile.social.startsWith('http') ? profile.social : `https://instagram.com/${profile.social.replace(/@/g, '')}`;
+          socialLink.target = '_blank';
+          socialLink.rel = 'noopener noreferrer';
+          socialLink.textContent = 'Social';
+          fragments.push(socialLink);
+        }
+        fragments.forEach((element, index) => {
+          if (index > 0) contact.append(' · ');
+          contact.appendChild(element);
+        });
+        card.appendChild(contact);
+      }
 
-        if (action === "delete") {
-          data.removeProfile(type, id);
-          if (selectedProfileId === id) {
-            selectedProfileId = null;
+      container.appendChild(card);
+    });
+  }
+
+  function createMetaChip(text) {
+    const span = document.createElement('span');
+    span.textContent = text;
+    return span;
+  }
+
+  function updateCounts() {
+    const talentCommunity = data.getTalent(false).length;
+    const talentPreview = data.getTalent(true).filter((profile) => profile.sample).length;
+    const employerCommunity = data.getEmployers(false).length;
+    const employerPreview = data.getEmployers(true).filter((profile) => profile.sample).length;
+
+    const talentCountEl = document.getElementById('talent-count');
+    if (talentCountEl) talentCountEl.textContent = formatNumber(talentCommunity);
+    const talentPreviewEl = document.getElementById('talent-preview');
+    if (talentPreviewEl) talentPreviewEl.textContent = formatNumber(talentPreview);
+
+    const employerCountEl = document.getElementById('employer-count');
+    if (employerCountEl) employerCountEl.textContent = formatNumber(employerCommunity);
+    const employerPreviewEl = document.getElementById('employer-preview');
+    if (employerPreviewEl) employerPreviewEl.textContent = formatNumber(employerPreview);
+  }
+
+  function handleForms() {
+    document.querySelectorAll('[data-profile-form]').forEach((form) => {
+      const type = form.getAttribute('data-profile-form');
+      const success = document.querySelector(`[data-profile-success="${type}"]`);
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        if (type === 'talent') {
+          const payload = {
+            name: formData.get('name')?.toString().trim(),
+            headline: formData.get('headline')?.toString().trim(),
+            location: formData.get('location')?.toString().trim(),
+            availability: formData.get('availability')?.toString().trim(),
+            email: formData.get('email')?.toString().trim(),
+            phone: formData.get('phone')?.toString().trim(),
+            experience: formData.get('experience')?.toString().trim(),
+            highlights: parseList(formData.get('strengths')),
+          };
+          if (!payload.name || !payload.headline || !payload.location || !payload.availability || !payload.email || !payload.experience) {
+            return;
           }
-          setStatus("Profile removed.");
-          syncPreview();
+          data.addTalent(payload);
+        } else {
+          const payload = {
+            name: formData.get('name')?.toString().trim(),
+            tagline: formData.get('tagline')?.toString().trim(),
+            location: formData.get('location')?.toString().trim(),
+            contact: formData.get('contact')?.toString().trim(),
+            email: formData.get('email')?.toString().trim(),
+            phone: formData.get('phone')?.toString().trim(),
+            focus: formData.get('focus')?.toString().trim(),
+            perks: parseList(formData.get('perks')),
+            website: formData.get('website')?.toString().trim(),
+            social: formData.get('social')?.toString().trim(),
+          };
+          if (!payload.name || !payload.tagline || !payload.location || !payload.contact || !payload.email || !payload.focus) {
+            return;
+          }
+          data.addEmployer(payload);
         }
-      });
-    }
 
-    if (exportBtn) {
-      exportBtn.addEventListener("click", () => {
-        const profile = getActiveProfile();
-        if (!profile) {
-          setStatus("Save a profile before exporting.", true);
-          return;
+        form.reset();
+        if (success) {
+          success.classList.add('is-visible');
         }
-        downloadJSON(profile, type);
-        setStatus("Profile exported as JSON.");
+        renderTalent();
+        renderEmployers();
+        updateCounts();
       });
-    }
 
-    if (copyBtn) {
-      copyBtn.addEventListener("click", () => {
-        const profile = getActiveProfile();
-        if (!profile) {
-          setStatus("Save a profile before copying.", true);
-          return;
-        }
-        const summary = type === "seeker" ? buildSeekerSummary(profile) : buildEmployerSummary(profile);
-        copyToClipboard(summary).then(() => setStatus("Profile summary copied."));
-      });
-    }
-
-    window.addEventListener("storage", (event) => {
-      if (event.key === "hire30a-profiles-seekers" && type === "seeker") {
-        syncPreview();
-      }
-      if (event.key === "hire30a-profiles-employers" && type === "employer") {
-        syncPreview();
+      if (success) {
+        form.querySelectorAll('input, textarea, select').forEach((element) => {
+          element.addEventListener('input', () => success.classList.remove('is-visible'));
+          element.addEventListener('change', () => success.classList.remove('is-visible'));
+        });
       }
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("[data-profile-form]");
-    if (!form) return;
-    initProfileBuilder(form);
-    const year = document.getElementById("year");
-    if (year) year.textContent = new Date().getFullYear();
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTalent();
+    renderEmployers();
+    updateCounts();
+    handleForms();
   });
 })();

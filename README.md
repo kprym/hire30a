@@ -1,60 +1,60 @@
 # Hire30A Coming-Soon Experience
 
-Hire30A is a search-optimized, mobile-ready preview site for hospitality hiring along Florida's Scenic 30A corridor. The project now spans a full multi-page experience with live aggregation, profile builders, and a secure admin portal so the team can demonstrate the upcoming marketplace without requiring logins.
+Hire30A is a search-friendly, mobile-first preview site for locals hiring locals across Santa Rosa Beach, Destin, and Panama City Beach, Florida. The experience focuses on storytelling, collecting real interest, and giving the community a place to share jobs and resumes while the full marketplace is in development.
 
-## Features
+## Highlights
 
-- **SEO-first landing page** with structured data, canonical tags, and open graph metadata that highlight the 30A, Destin, and Panama City Beach markets.
-- **Live jobs feed** (`jobs.html`) that filters by keyword, neighborhood, category, source, and posted date. Results sync from LinkedIn, Indeed, SoWal forums, and optional proxies using the built-in aggregator.
-- **Talent studio & employer spotlight** (`talent.html` and `employers.html`) where locals and hiring managers craft shareable profiles, export JSON, and copy summaries without creating accounts.
-- **Passcode-gated admin portal** (`admin.html`) to control colors, hero copy, aggregation credentials, job refreshes, profile moderation, and passcode rotation. Changes persist via `localStorage` and broadcast across open tabs.
-- **Roadmap storytelling & newsletter capture** on `index.html` to nurture the community while paid offerings are still in development.
+- **SEO-ready landing page** with structured data, open graph tags, roadmap storytelling, and newsletter capture designed to rank for Gulf Coast hospitality searches.
+- **Job board preview** (`jobs.html`) that blends clearly labelled sample listings with real community submissions, complete with filters and a self-serve "Share an opening" form.
+- **Talent studio & employer spotlight** (`talent.html` and `employers.html`) where locals and hiring teams can publish profiles without logins. Submissions update counts across the site instantly.
+- **Lightweight admin portal** (`admin.html`) gated by a passcode so the team can adjust brand colors, hero messaging, export JSON snapshots, and clear local submissions. Everything persists in browser `localStorage`.
+- **Consistent branding system** managed through CSS variables so the look and feel stays cohesive across all pages and viewports.
 
-## Structure
+## Project Structure
 
 ```
 .
-├── index.html            # Public landing page & roadmap
-├── jobs.html             # Live job aggregation view with filters
-├── talent.html           # Job seeker profile builder
-├── employers.html        # Employer spotlight builder
-├── admin.html            # Admin controls for branding, data, and gating
+├── index.html            # Public landing page and roadmap
+├── jobs.html             # Job board preview with filters and submission form
+├── talent.html           # Talent profile form and showcase
+├── employers.html        # Employer spotlight form and showcase
+├── admin.html            # Passcode-gated admin controls
 ├── assets
 │   ├── css
-│   │   └── main.css      # Global styling, responsive layout, admin gate styles
+│   │   └── main.css      # Global styles and responsive layout
 │   ├── js
-│   │   ├── data.js       # Shared storage helpers, aggregation, security utilities
-│   │   ├── main.js       # Landing page interactivity & metrics
-│   │   ├── jobs.js       # Jobs feed rendering, filtering, and refresh logic
-│   │   ├── profiles.js   # Talent/employer profile builders & exports
-│   │   └── admin.js      # Admin portal gating, configuration, and exports
-│   └── images            # Brand illustrations, logos, map, and favicons
-├── robots.txt            # Crawl directives pointing to sitemap
-├── sitemap.xml           # Discoverable URLs for search engines
-└── site.webmanifest      # Progressive web app metadata
+│   │   ├── data.js       # Shared localStorage helpers and sample content
+│   │   ├── main.js       # Landing page interactivity, metrics, and nav
+│   │   ├── jobs.js       # Job filtering, rendering, and submission logic
+│   │   ├── profiles.js   # Talent/employer form handling and rendering
+│   │   └── admin.js      # Admin gating, branding, and export utilities
+│   └── images            # Logos and supporting artwork
+├── robots.txt            # Crawl directives
+├── sitemap.xml           # Page index for search engines
+└── site.webmanifest      # Basic PWA metadata
 ```
 
-## Local Preview
+## Running Locally
 
-Open any HTML file directly in your browser or serve the directory with a static server (for example, `python -m http.server`). Data persists in the browser’s `localStorage`, so each browser/device maintains its own sandboxed content.
+No build step is required. Open `index.html` (or any page) directly in a browser, or serve the directory with a static server such as:
 
-## Configuring the Aggregator
+```
+python -m http.server
+```
 
-1. Unlock `admin.html` using the default passcode **GulfAccess2024!** (change it immediately under *Security & access*).
-2. In the **Job aggregation settings** section, provide your RapidAPI JSearch key (for LinkedIn/Indeed/ZipRecruiter results) and optional SoWal RSS URL or proxy endpoint.
-3. Toggle which sources to include and save. A test button triggers a fetch and stores the results locally; the jobs page reflects changes instantly.
-4. Use the **Refresh jobs now** button anytime to rehydrate the feed. Export JSON snapshots for analytics or archive purposes.
+All data is stored in the browser's `localStorage`, so each browser/device maintains its own sandboxed submissions. Clearing browser storage resets the experience to the default sample content.
 
-## Building Community Profiles
+## Admin Portal
 
-- Talent and employers can create profiles on their dedicated pages, mark them as “Publish,” and export JSON or copy formatted summaries. Published counts feed the homepage and admin metrics.
-- The admin portal lists all stored profiles so moderators can export or clear them before the full platform launches.
+1. Visit `admin.html` and enter the default preview passcode **emeraldcoast**.
+2. Adjust primary/accent brand colors or update the hero heading/subheading, then save to apply changes immediately across the site.
+3. Export submissions as JSON using the provided buttons. Downloads reflect only the data stored on the current device.
+4. Use the clear buttons to remove local submissions before a demo or fresh import. This does not affect other browsers.
 
-## Security Notes
+## Community Submissions
 
-- The admin portal is gated by a SHA-256 hashed passcode stored in `localStorage`. Rotate it frequently using the form in the *Security & access* section.
-- API keys stay in the browser; consider proxying through your own backend when deploying beyond the coming-soon phase.
+- **Jobs:** The jobs page stores submissions with metadata provided via the form. They appear instantly with a "Community submission" badge and feed the homepage metrics.
+- **Talent & Employers:** Profile forms capture highlights, availability, and contact info. Entries are saved locally and surfaced on their respective showcase pages.
+- **Newsletter:** Newsletter signups are counted and can be exported from the admin area for follow-up campaigns.
 
-## Roadmap Highlights
-
-This coming-soon build prepares the foundation for authenticated employer/candidate accounts, ATS integrations, analytics dashboards, paid placements, and automated distribution of hospitality opportunities throughout the Emerald Coast.
+The site intentionally avoids fabricated metrics—counts only reflect the submissions stored in the current browser plus clearly labelled sample previews. Paid options and automated sourcing will be layered in once the full Hire30A platform launches.
