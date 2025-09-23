@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hire30A Job Board Preview | Santa Rosa Beach, Destin &amp; Panama City Beach</title>
+    <meta
+      name="description"
+      content="Preview the Hire30A job board for hospitality roles across Santa Rosa Beach, Destin, and Panama City Beach. Share your opening and see it appear instantly."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary">
+      <div class="container">
+        <a class="brand" href="index.html" aria-label="Hire30A home">
+          <img src="assets/images/hire30a-logo.svg" alt="Hire30A logo" width="140" height="36" loading="lazy" />
+          <span>Hire30A</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+          </svg>
+        </button>
+        <nav id="primary-nav" class="navbar">
+          <ul>
+            <li><a href="index.html#vision">Vision</a></li>
+            <li><a href="index.html#districts">Districts</a></li>
+            <li><a href="index.html#experience">Experience</a></li>
+            <li><a href="talent.html">Talent</a></li>
+            <li><a href="employers.html">Employers</a></li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+          <a class="button" href="index.html#newsletter">Join updates</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="jobs">
+      <section class="hero-sub" aria-labelledby="jobs-heading">
+        <div class="container">
+          <div>
+            <p class="eyebrow">Job board preview</p>
+            <h1 id="jobs-heading">Collecting real Emerald Coast hospitality openings.</h1>
+            <p class="tagline">
+              The Hire30A job board launches soon. Share your opening today, and we will display it here with no inflated counts—just what the community contributes.
+            </p>
+          </div>
+          <div class="quick-stats" aria-label="Job submission metrics">
+            <div class="stat">
+              <span id="jobs-total">0</span>
+              <small>Listings displayed</small>
+            </div>
+            <div class="stat">
+              <span id="jobs-community">0</span>
+              <small>Community submissions</small>
+            </div>
+            <div class="stat">
+              <span id="jobs-preview">0</span>
+              <small>Sample previews</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="filters-heading">
+        <div class="container">
+          <div class="section-header">
+            <h2 id="filters-heading">Filter the preview</h2>
+            <p>Use the filters to explore sample listings or your own submissions across Santa Rosa Beach, Destin, and Panama City Beach.</p>
+          </div>
+          <form id="job-filter" class="card" autocomplete="off">
+            <div class="form-grid">
+              <div class="field">
+                <label for="job-search">Search by title or company</label>
+                <input id="job-search" name="search" placeholder="e.g., bartender, concierge, event coordinator" />
+              </div>
+              <div class="field">
+                <label for="job-area">Area</label>
+                <select id="job-area" name="area">
+                  <option value="">All areas</option>
+                  <option value="Santa Rosa Beach &amp; Scenic 30A">Santa Rosa Beach &amp; Scenic 30A</option>
+                  <option value="Destin &amp; Miramar Beach">Destin &amp; Miramar Beach</option>
+                  <option value="Panama City Beach &amp; 30E">Panama City Beach &amp; 30E</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="job-category">Category</label>
+                <select id="job-category" name="category">
+                  <option value="">All hospitality types</option>
+                  <option value="Food &amp; Beverage">Food &amp; Beverage</option>
+                  <option value="Hotel &amp; Resort">Hotel &amp; Resort</option>
+                  <option value="Events &amp; Weddings">Events &amp; Weddings</option>
+                  <option value="Retail &amp; Wellness">Retail &amp; Wellness</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="job-type">Schedule</label>
+                <select id="job-type" name="type">
+                  <option value="">Any schedule</option>
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Seasonal">Seasonal</option>
+                </select>
+              </div>
+            </div>
+            <div class="cta-group">
+              <button class="button" type="submit">Apply filters</button>
+              <button class="button button-outline" type="reset">Clear</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="section section-alt" aria-labelledby="results-heading">
+        <div class="container">
+          <div class="section-header">
+            <h2 id="results-heading">Preview listings</h2>
+            <p>Sample listings are labeled clearly. Community submissions show in real time once you share them.</p>
+          </div>
+          <div id="job-results" class="job-list" role="list"></div>
+          <div id="jobs-empty" class="empty-state" hidden>
+            <p>No listings match yet. Try adjusting filters or add your opening below.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="share-heading">
+        <div class="container">
+          <div class="share-card">
+            <h2 id="share-heading">Share an opening</h2>
+            <p class="tagline">
+              Submit your role and we will display it instantly in this preview. When the full platform launches, we will migrate community submissions first.
+            </p>
+            <form id="job-share-form" autocomplete="off">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="share-company">Business name</label>
+                  <input id="share-company" name="company" required placeholder="Your business or venue" />
+                </div>
+                <div class="field">
+                  <label for="share-title">Role title</label>
+                  <input id="share-title" name="title" required placeholder="e.g., Lead server" />
+                </div>
+                <div class="field">
+                  <label for="share-area">Primary area</label>
+                  <select id="share-area" name="area" required>
+                    <option value="">Select an area</option>
+                    <option value="Santa Rosa Beach &amp; Scenic 30A">Santa Rosa Beach &amp; Scenic 30A</option>
+                    <option value="Destin &amp; Miramar Beach">Destin &amp; Miramar Beach</option>
+                    <option value="Panama City Beach &amp; 30E">Panama City Beach &amp; 30E</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="share-category">Category</label>
+                  <select id="share-category" name="category" required>
+                    <option value="">Select category</option>
+                    <option value="Food &amp; Beverage">Food &amp; Beverage</option>
+                    <option value="Hotel &amp; Resort">Hotel &amp; Resort</option>
+                    <option value="Events &amp; Weddings">Events &amp; Weddings</option>
+                    <option value="Retail &amp; Wellness">Retail &amp; Wellness</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="share-type">Schedule</label>
+                  <select id="share-type" name="type" required>
+                    <option value="">Select schedule</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Seasonal">Seasonal</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="share-email">Contact email</label>
+                  <input id="share-email" name="email" type="email" required placeholder="apply@yourbusiness.com" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="share-description">Describe the opportunity</label>
+                <textarea id="share-description" name="description" required placeholder="Tell locals what makes this role special..."></textarea>
+              </div>
+              <div class="field">
+                <label for="share-link">Optional apply link</label>
+                <input id="share-link" name="link" type="url" placeholder="https://example.com/apply" />
+              </div>
+              <div class="cta-group">
+                <button class="button" type="submit">Publish to preview</button>
+                <button class="button button-outline" type="reset">Reset form</button>
+              </div>
+            </form>
+            <p id="job-success" class="success-message" role="status" aria-live="polite">
+              Thanks! Your opening is now visible in the preview and counted in the community totals.
+            </p>
+            <p class="form-footnote">
+              We will email you before launch for verification. Listings remain visible here and can be exported through the admin panel.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <p>&copy; <span id="year"></span> Hire30A. Serving Santa Rosa Beach, Destin, and Panama City Beach.</p>
+        <a href="index.html">Return home</a>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/jobs.js" defer></script>
+  </body>
+</html>
