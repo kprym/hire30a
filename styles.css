@@ -1,4 +1,126 @@
 :root {
+  --ink: #102635;
+  --sea: #3f7f88;
+  --foam: #e8f5f4;
+  --sand: #f8f2e6;
+  --white: #ffffff;
+  --line: rgba(16, 38, 53, 0.11);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: Manrope, system-ui, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(1000px 500px at 85% -10%, rgba(63,127,136,.22), transparent 60%),
+              radial-gradient(700px 350px at 10% 0%, rgba(241,205,160,.28), transparent 70%),
+              linear-gradient(180deg, #fffdf8 0%, #f6f1e8 45%, #edf7f5 100%);
+}
+
+.wrap { width: min(1140px, 92vw); margin: 0 auto; }
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  backdrop-filter: blur(8px);
+}
+.brand { text-decoration: none; color: var(--ink); font-weight: 800; letter-spacing: .18em; }
+.nav { display: flex; gap: .95rem; }
+.nav a { text-decoration: none; color: var(--ink); opacity: .75; font-weight: 600; }
+.nav a:hover, .nav a.active { opacity: 1; color: var(--sea); }
+.nav-toggle { display: none; border: 0; background: transparent; font-size: 1.35rem; }
+
+.hero { padding: 3rem 0 1rem; }
+.split { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.1rem; align-items: stretch; }
+.eyebrow { margin: 0 0 .4rem; font-size: .74rem; font-weight: 800; letter-spacing: .2em; color: var(--sea); }
+h1, h2, h3 { margin: .2rem 0 .55rem; }
+h1 { font-family: "Playfair Display", serif; font-size: clamp(2.2rem, 5.8vw, 4.35rem); line-height: 1.02; }
+h2 { font-family: "Playfair Display", serif; font-size: clamp(1.7rem, 4vw, 2.4rem); }
+.lead { max-width: 64ch; line-height: 1.68; font-size: 1.05rem; }
+.small { font-size: .93rem; opacity: .8; }
+
+.hero-photo-wrap { min-height: 290px; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; }
+.chips span { background: var(--foam); border: 1px solid #cce4e2; border-radius: 999px; padding: .26rem .63rem; font-size: .8rem; }
+
+.grid2, .grid3, .stack, .mosaic { display: grid; gap: 1rem; }
+.grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bento { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 1rem; margin: .8rem 0 1.1rem; }
+
+.card {
+  background: rgba(255, 255, 255, .74);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 1.05rem;
+  box-shadow: 0 10px 35px rgba(16, 38, 53, 0.08);
+}
+.kpi h3 { margin-top: .1rem; }
+.photo {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--foam), var(--sand));
+  border: 1px solid rgba(16, 38, 53, .06);
+}
+.mosaic { grid-template-columns: 1.1fr .9fr 1fr; margin-bottom: 2rem; }
+.photo.missing { opacity: .3; filter: grayscale(.35); }
+
+.input {
+  width: 100%;
+  border: 1px solid #c9d7d8;
+  border-radius: 10px;
+  padding: .68rem;
+  font: inherit;
+  margin-bottom: .62rem;
+  background: #fff;
+}
+.btn {
+  border: 0;
+  border-radius: 11px;
+  padding: .68rem .92rem;
+  background: linear-gradient(135deg, #4d8f98, #3f7f88);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.footer {
+  padding: 2rem 0 2.8rem;
+  margin-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .95rem;
+}
+.footer a { color: var(--sea); }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.show { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 980px) {
+  .split, .grid2, .grid3, .bento, .mosaic, .footer { grid-template-columns: 1fr; display: grid; }
+  .nav-toggle { display: block; }
+  .nav {
+    display: none;
+    position: absolute;
+    top: 3.2rem;
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: .75rem;
+    flex-direction: column;
+  }
+  .nav.open { display: flex; }
+}
   --bg: #f9f6ef;
   --ink: #132938;
   --sea: #5b8e95;
