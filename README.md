@@ -10,6 +10,19 @@ A refreshed multi-page single-page app (SPA) that blends:
 
 ## Run locally
 
+# hire30a
+
+Coastal multi-page portfolio app (hash-routed SPA) for Kolton, combining:
+
+- Personal brand and professional profile
+- Lifestyle + regional coast guide sections
+- Journal/blog layout
+- Lightweight local "admin" editor for posts and spots via `localStorage`
+
+## Run locally
+
+Open `index.html` directly in a browser, or run a simple local server:
+
 ```bash
 python3 -m http.server 8080
 ```
@@ -39,3 +52,20 @@ Then open `http://localhost:8080`.
 - `dji_fly_20250910_185346_0321_1757597042649_burst.jpg`
 
 If an image is missing, the UI degrades gracefully with a muted placeholder.
+Then visit `http://localhost:8080`.
+
+## Photo setup
+
+Place your owned images in the project root with names used in `app.js`:
+
+- `srb-dune-lake.jpg`
+- `srb-shoreline.jpg`
+- `30a-palm.jpg`
+- `seaside-evening.jpg`
+- `grayton-beach.jpg`
+- `miramar-sunset.jpg`
+- `sandestin-marina.jpg`
+- `destin-harbor.jpg`
+- `pcb-coastline.jpg`
+
+If a file is missing, the UI shows a graceful placeholder state instead of breaking.
