@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hire30A | Santa Rosa Beach Jobs</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="overlay"></div>
+      <div class="hero-content container">
+        <p class="eyebrow">Hire30A.com</p>
+        <h1>Find local work along Santa Rosa Beach &amp; 30A.</h1>
+        <p>
+          A community-driven job board connecting coastal businesses with talented people who love life on the Gulf.
+        </p>
+        <div class="stats" id="stats"></div>
+      </div>
+    </header>
+
+    <main class="container layout">
+      <section class="panel" aria-labelledby="search-title">
+        <h2 id="search-title">Search Community Jobs</h2>
+        <form id="filters" class="grid-form">
+          <label>
+            Keyword
+            <input type="text" name="q" placeholder="Barista, maintenance, retail..." />
+          </label>
+          <label>
+            Job Type
+            <select name="type">
+              <option value="">Any</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Seasonal</option>
+              <option>Contract</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <select name="category">
+              <option value="">Any</option>
+              <option>Hospitality</option>
+              <option>Retail</option>
+              <option>Skilled Trades</option>
+              <option>Administration</option>
+              <option>Education</option>
+            </select>
+          </label>
+          <button type="submit">Search Jobs</button>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="jobs-title">
+        <h2 id="jobs-title">Open Roles</h2>
+        <div id="jobs" class="jobs"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="post-title">
+        <h2 id="post-title">Post a Job</h2>
+        <form id="postJobForm" class="grid-form">
+          <label>Job Title<input name="title" required /></label>
+          <label>Company<input name="company" required /></label>
+          <label>Location<input name="location" value="Santa Rosa Beach, FL" required /></label>
+          <label>
+            Job Type
+            <select name="type" required>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Seasonal</option>
+              <option>Contract</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <select name="category" required>
+              <option>Hospitality</option>
+              <option>Retail</option>
+              <option>Skilled Trades</option>
+              <option>Administration</option>
+              <option>Education</option>
+            </select>
+          </label>
+          <label>Salary / Pay Range<input name="salary" placeholder="$20/hr or $45,000 - $55,000" /></label>
+          <label class="full-width">Description<textarea name="description" rows="4" required></textarea></label>
+          <button type="submit">Publish Job</button>
+          <p id="postStatus" class="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <dialog id="applyDialog">
+      <form id="applyForm" method="dialog" class="apply-form">
+        <h3 id="applyTitle">Apply</h3>
+        <input type="hidden" name="jobId" />
+        <label>Full Name<input name="name" required /></label>
+        <label>Email<input type="email" name="email" required /></label>
+        <label>Phone<input name="phone" /></label>
+        <label>Message<textarea name="message" rows="4" placeholder="Share your relevant experience."></textarea></label>
+        <div class="row">
+          <button type="submit">Submit Application</button>
+          <button type="button" id="closeDialog" class="secondary">Cancel</button>
+        </div>
+        <p id="applyStatus" class="status"></p>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

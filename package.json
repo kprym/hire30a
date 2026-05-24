@@ -1,0 +1,13 @@
+{
+  "name": "hire30a",
+  "version": "1.0.0",
+  "description": "Hire30A community job board for Santa Rosa Beach",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check server.js && node --check public/app.js"
+  },
+  "keywords": ["jobs", "santa-rosa-beach", "community"],
+  "license": "MIT"
+}
